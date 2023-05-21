@@ -1,27 +1,77 @@
-<template>
-  <div id="reader" width="600px"></div>
-</template>
-
 <script setup>
-  // To use Html5QrcodeScanner (more info below)
+import createClient from "../clients.js";
+import { reactive } from "vue";
 import {Html5QrcodeScanner} from "html5-qrcode";
 
-function onScanSuccess(decodedText, decodedResult) {
-  // handle the scanned code as you like, for example:
-  console.log(`Code matched = ${decodedText}`, decodedResult);
-}
+const data = reactive({
+  decodedText: '',
+  error: '',
+  products: []
+});
+
+const params = {codigo: ''};
+
+
+/* QR CODE */
+function onScanSuccess(decodedText) {
+  data.decodedText = decodedText;
+};
 
 function onScanFailure(error) {
-  // handle scan failure, usually better to ignore and keep scanning.
-  // for example:
-}
+};
 
 let html5QrcodeScanner = new Html5QrcodeScanner(
   "reader",
-  { fps: 10, qrbox: {width: 250, height: 250} },
+  { fps: 10, qrbox: {width: 350, height: 250} },
   /* verbose= */ false);
 html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+
+/* DATA */
+function fetchData(){
+  createClient.fetch(query).then(
+    (res) => {
+      data.products = res},
+    (error) => {
+      data.error = error;
+    }
+  );
+};
+
+const query = `*[_type == 'products' && codigo == $codigo]`;
+
+function checkear(){
+  if(data.decodedText != ''){
+    params.codigo = data.decodedText;
+
+    fetchData();
+  }
+  data.error = "No se ha ingresado ningun codigo"
+}
+
+
 </script>
+
+<template>
+  <div id="reader" width="600px"></div>
+
+  {{ data.decodedText }} <br>
+  <input v-model="data.decodedText" type="text" placeholder="Ingresar manualmente"> <br>
+
+  <button @click="checkear">Checkear</button>
+
+  {{ data.products }}
+  {{ data.error }}
+
+  <div v-for="product in data.products">
+    <div v-if="product.codigo == data.decodedText">
+    Descripcion:  {{ product.descripcion }}
+    Precio: $ {{ product.precio }}
+    </div>
+  </div>
+  
+  
+</template>
 
 <style>
 </style>

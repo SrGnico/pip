@@ -1,6 +1,7 @@
 <script setup>
 import createClient from "../clients.js";
 import { reactive } from "vue";
+import Reader from '../components/Reader.vue';
 
 const product = reactive({
   _type: 'products',
@@ -29,16 +30,22 @@ function crearProducto(){
       product.stock = '';
     }
 }
+
+function addQr(qr){
+  product.codigo = qr;
+}
+
 </script>
 
 <template>
-  <div class="about">
+  <Reader @qr="addQr"/>
+  <div class="principal-container">
     <h1>Agregar Producto:</h1>
-    Decripcion: <br>
-    <input v-model="product.descripcion" type="text" placeholder="Descripcion" name="descripcion" id="descripcion"> <br>
-    Codigo Manual o Escanear: <br>
-    <input v-model="product.codigo" type="text" placeholder="Codigo" name="codigo" id="codigo"> <br>
-    Categoria: <br>
+    Decripcion: 
+    <input v-model="product.descripcion" type="text" placeholder="Descripcion" name="descripcion" id="descripcion"> 
+    Codigo Manual o Escanear:
+    <input v-model="product.codigo" type="text" placeholder="Codigo" name="codigo" id="codigo">
+    Categoria:
     <select v-model="product.categoria" id="categoria" name="categoria">
       <option value="fiambre">Fiambre</option>
       <option value="almacen">Almacen</option>
@@ -51,16 +58,22 @@ function crearProducto(){
       <option value="congelados">Congelados</option>
       <option value="suelto">Sueltos</option>
       <option value="otros">Otros</option>
-    </select> <br>
-    Precio: <br>
-    <input v-model="product.precio" type="number" placeholder="Precio" name="precio" id="precio"> <br>
-    Stock: <br>
-    <input v-model="product.stock" type="number" placeholder="Stock" name="stock" id="stock"> <br>
+    </select> 
+    Precio: (decimales con '.')
+    <input v-model="product.precio" type="number" placeholder="Precio" name="precio" id="precio">
+    Stock: 
+    <input v-model="product.stock" type="number" placeholder="Stock" name="stock" id="stock">
 
     <button @click="crearProducto">Crear</button>
   </div>
-
-    {{ product }}
-
-  <div id="reader" width="600px"></div>
 </template>
+
+<style scoped>
+.principal-container{
+  height: 50svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+}
+</style>

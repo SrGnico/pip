@@ -34,7 +34,7 @@ function addQr(qr){
   data.decodedText = qr;
 }
 
-fetchData();
+//fetchData();
 
 </script>
 

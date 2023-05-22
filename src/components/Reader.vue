@@ -27,3 +27,7 @@ function stopQr(){
 });
 }
 </script>
+
+<template>
+    <div></div>
+</template>

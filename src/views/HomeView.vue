@@ -9,7 +9,6 @@ const data = reactive({
   products: []
 });
 
-const params = {codigo: ''};
 
 /* DATA */
 function fetchData(){
@@ -26,7 +25,7 @@ const query = `*[_type == 'products']`;
 
 function checkear(){
   if(data.decodedText != ''){
-    fetchData();
+
   }
   data.error = "No se ha ingresado ningun codigo"
 }
@@ -35,15 +34,14 @@ function addQr(qr){
   data.decodedText = qr;
 }
 
+fetchData();
+
 </script>
 
 <template>
   <Reader @qr="addQr"/>
   {{ data.decodedText }} <br>
   <input v-model="data.decodedText" type="text" placeholder="Ingresar manualmente"> <br>
-
-  <button @click="checkear">Checkear</button>
-
 
   <div v-for="product in data.products">
     <div v-if="product.codigo == data.decodedText">

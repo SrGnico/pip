@@ -13,7 +13,7 @@ const qrCodeSuccessCallback = (decodedText) => {
 };
 const config = { 
   fps: 10,
-  qrbox: { width: 300, height: 200},
+  qrbox: {width: 300, height: 400},
 };
 
 html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
@@ -27,7 +27,3 @@ function stopQr(){
 });
 }
 </script>
-
-<template>
-    <div></div>
-</template>

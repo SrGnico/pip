@@ -1,7 +1,9 @@
 <script setup>
 import createClient from "../clients.js";
 import { reactive } from "vue";
-import {Html5QrcodeScanner} from "html5-qrcode";
+import {Html5Qrcode} from "html5-qrcode";
+
+
 
 const data = reactive({
   decodedText: '',
@@ -12,19 +14,29 @@ const data = reactive({
 const params = {codigo: ''};
 
 
-/* QR CODE */
-function onScanSuccess(decodedText) {
-  data.decodedText = decodedText;
+/* QR CODE */ 
+const html5QrCode = new Html5Qrcode("reader");
+const qrCodeSuccessCallback = (decodedText) => {
+    /* handle success */
+    data.decodedText = decodedText;
+   // stopQr();
+
+};
+const config = { 
+  fps: 10,
+  qrbox: { width: 300, height: 200},
 };
 
-function onScanFailure(error) {
-};
+html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
 
-let html5QrcodeScanner = new Html5QrcodeScanner(
-  "reader",
-  { fps: 10, qrbox: {width: 350, height: 250} },
-  /* verbose= */ false);
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+function stopQr(){
+  html5QrCode.stop().then((ignore) => {
+  // QR Code scanning is stopped.
+}).catch((err) => {
+  // Stop failed, handle it.
+});
+}
 
 
 /* DATA */
@@ -38,7 +50,7 @@ function fetchData(){
   );
 };
 
-const query = `*[_type == 'products' && codigo == $codigo]`;
+const query = `*[_type == 'products']`;
 
 function checkear(){
   if(data.decodedText != ''){
@@ -53,15 +65,11 @@ function checkear(){
 </script>
 
 <template>
-  <div id="reader" width="600px"></div>
-
   {{ data.decodedText }} <br>
   <input v-model="data.decodedText" type="text" placeholder="Ingresar manualmente"> <br>
 
   <button @click="checkear">Checkear</button>
 
-  {{ data.products }}
-  {{ data.error }}
 
   <div v-for="product in data.products">
     <div v-if="product.codigo == data.decodedText">
@@ -73,5 +81,5 @@ function checkear(){
   
 </template>
 
-<style>
+<style scoped>
 </style>

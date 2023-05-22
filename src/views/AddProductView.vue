@@ -1,22 +1,6 @@
 <script setup>
 import createClient from "../clients.js";
 import { reactive } from "vue";
-import {Html5QrcodeScanner} from "html5-qrcode";
-
-/* QR CODE */
-function onScanSuccess(decodedText) {
-  product.codigo = decodedText;
-};
-
-function onScanFailure(error) {
-};
-
-let html5QrcodeScanner = new Html5QrcodeScanner(
-  "reader",
-  { fps: 10, qrbox: {width: 350, height: 250} },
-  /* verbose= */ false);
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
 
 const product = reactive({
   _type: 'products',

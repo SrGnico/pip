@@ -86,11 +86,11 @@ function deleteItem(item, i){
 function addItem(i){
   data.cart[i].stock++;
   console.log(data.cart[i].stock)
-  data.totalPriceSum + data.cart[i].precio ;
+  data.totalPriceSum += data.cart[i].precio ;
 }
 function resItem(i){
   data.cart[i].stock--;
-  data.totalPriceSum - data.cart[i].precio ;
+  data.totalPriceSum -= data.cart[i].precio ;
 }
 //fetchData();
 
@@ -144,7 +144,7 @@ function resItem(i){
             <button @click="addItem(i)"><Icon class="icon" icon="mingcute:add-fill" /></button>
             <button @click="deleteItem(item,i)"><Icon class="icon red" icon="maki:cross" /></button>
           </div>
-
+          <h2>X {{ item.stock }}</h2>
           <h2 @click="toggleItemEdit(i)">${{ item.precio * item.stock }}</h2> 
         </div>
         

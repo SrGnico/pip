@@ -19,7 +19,7 @@ import { Icon } from '@iconify/vue';
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background: var(--color-1);
-  color: #2c3e50;
+  background: var(--color-1);
 }
 
 nav {

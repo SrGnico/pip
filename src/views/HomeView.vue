@@ -33,10 +33,14 @@ const data = reactive({
 }
 ],
   cart: [],
-  isEditing: false
+  totalPriceSum: 0,
+  isEditing: false,
 });
 
-
+const manualPrice = reactive({
+  precio: 0,
+  descripcion: ''
+})
 
 /* DATA */
 function fetchData(){
@@ -55,17 +59,28 @@ function addQr(qr){
   data.decodedText = qr;
 }
 
-function addItemToCart(x){
-  data.cart.push(x);
+function addItemToCart(product){
+
+  if(manualPrice.precio == 0 && manualPrice.descripcion == '' && data.decodedText != ''){
+    data.cart.push(product);
+    data.totalPriceSum += product.precio; 
+    data.decodedText = '';
+  }
+  else if(data.decodedText == '' && !manualPrice.precio == 0 && !manualPrice.descripcion == '' ){
+    data.cart.push(manualPrice);
+    data.totalPriceSum += manualPrice.precio;
+  }
+  
+ 
 }
 
 function toggleItemEdit(i){
-  data.cart[i] 
   data.isEditing = !data.isEditing;
 }
 
-function deleteItem(i){
-  data.cart.splice(i, 1)
+function deleteItem(item, i){
+  data.totalPriceSum -= item.precio;
+  data.cart.splice(i, 1);
 }
 //fetchData();
 
@@ -74,36 +89,63 @@ function deleteItem(i){
 <template>
   <Reader @qr="addQr"/>
   <input v-model="data.decodedText" type="text" placeholder="Ingresar manualmente"> <br>
-
-  <div v-for="product in data.products">
-    <div class="preview-producto" v-if="product.codigo == data.decodedText">
-    <div class="flex">
-      <h4>{{ product.descripcion }} </h4>
-      <h2>${{ product.precio }}</h2> 
+  <div class="contenedor-principal">
+    
+    <div v-for="(product,i) in data.products">
+      <div class="preview-producto" v-if="product.codigo == data.decodedText">
+        <div class="flex">
+          <h4>{{ product.descripcion }} </h4>
+          <h2>${{ product.precio }}</h2> 
+        </div>
+        <button @click="addItemToCart(product,i)"><Icon class="icon" icon="bx:cart-add" /></button>
+      </div>
     </div>
-    <button @click="addItemToCart(product)"><Icon class="icon" icon="bx:cart-add" /></button>
-  </div>
+    <div v-show="data.decodedText == ''">
+      <div class="preview-producto">
+        <div class="flex-row">
 
+          <div class="flex">
+            <h4>Categoria</h4>
+            <select class="input" v-model="manualPrice.descripcion" id="categoria" name="categoria">
+              <option value="Fiambre">Fiambre</option>
+              <option value="Promo">Promo</option>
+              <option value="Suelto">Sueltos</option>
+              <option value="Otros">Otros</option>
+            </select> 
+          </div>
+
+          <div class="flex">
+            <h4>Precio</h4>
+            <input class="input" type="number" v-model="manualPrice.precio"/>
+          </div>
+          
+        </div>
+        <button @click="addItemToCart()"><Icon class="icon" icon="bx:cart-add" /></button>
+      </div>
     </div>
+
       <div class="cart">
+        <div class="item-cart clear"></div>
         <div class="item-cart" v-for="(item,i) in data.cart">
           <h4 @click="toggleItemEdit(i)">{{ item.descripcion }} </h4>
 
           <div v-if="data.isEditing" class="item-cart-btns">
             <button><Icon class="icon" icon="ph:minus-bold" /></button>
             <button><Icon class="icon" icon="mingcute:add-fill" /></button>
-            <button @click="deleteItem(i)"><Icon class="icon red" icon="maki:cross" /></button>
+            <button @click="deleteItem(item,i)"><Icon class="icon red" icon="maki:cross" /></button>
           </div>
 
           <h2 @click="toggleItemEdit(i)">${{ item.precio }}</h2> 
         </div>
-    </div>
+        
+      </div>
 
   
     <div class="total">
       <h2>Total:</h2>
-      <h3>{{  }}</h3>
+      <h2>${{ data.totalPriceSum }}</h2>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -114,6 +156,14 @@ function deleteItem(i){
 @keyframes add-item {
   from{opacity: 0; height: 0;}
   to{opacity: 1; height: 8svh;}
+}
+.contenedor-principal{
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin-bottom: 5svh;
+  min-height: 52svh;
+  background: var(--color-1);
 }
 .preview-producto{
   background: var(--color-2);
@@ -132,11 +182,24 @@ function deleteItem(i){
   align-items: center;
   width: 100%;
 }
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
 
 button{
   appearance: none;
   background: none;
   border: none;
+}
+
+.input{
+  border: 3px solid var(--color-1);
+  background: var(--color-3);
+  padding: 5px;
+  border-radius: 15px;
+  height: 5svh;
+  width: 100%;
 }
 
 
@@ -169,6 +232,7 @@ button{
   display: flex;
   flex-direction: column-reverse;
 }
+
 .item-cart{
   position: relative;
   display: flex;
@@ -182,8 +246,11 @@ button{
   animation: add-item 300ms ease-in-out forwards;
   z-index: 5;
 }
+.clear{
+  border: 0;
+}
 
-.item-cart>h2,.total>h3{
+.item-cart>h2,.total>h2{
   width: 30svw;
 }
 

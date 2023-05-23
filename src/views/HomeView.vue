@@ -144,8 +144,8 @@ button{
   border: 2px solid var(--color-2);
 }
 
-.item-cart>h2{
-  border: 2px solid brown;
+.item-cart>h2,.total>h3{
+  border: 2px solid;
   width: 30svw;
 }
 
@@ -155,9 +155,10 @@ button{
   height: 5svh;
   width: 100svw;
   padding: 15px;
-  background-color: brown;
+  background: var(--color-2);
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
+
 </style>

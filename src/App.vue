@@ -18,12 +18,12 @@ import { Icon } from '@iconify/vue';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background: var(--color-1);
   color: #2c3e50;
 }
 
 nav {
-  border: 3px solid black;
-
+  background: var(--color-1);
   position: fixed;
   bottom: 0;
   width: 100svw;
@@ -35,12 +35,12 @@ nav {
 }
 
 nav a {
-  color: #2c3e50;
+  color: var(--color-2);
 }
 .icon{
   font-size: 2rem;
 }
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: var(--color-4);
 }
 </style>

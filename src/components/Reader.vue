@@ -26,6 +26,7 @@ function stopQr(){
   // Stop failed, handle it.
 });
 }
+
 </script>
 
 <template>

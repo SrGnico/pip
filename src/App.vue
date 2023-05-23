@@ -32,6 +32,7 @@ nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  z-index: 100;
 }
 
 nav a {

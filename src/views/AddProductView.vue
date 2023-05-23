@@ -95,7 +95,7 @@ function cerrar(){
 <style scoped>
 .principal-container{
   position: relative;
-  height: 50svh;
+  height: 52svh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -149,7 +149,7 @@ input, select, button{
   position: absolute;
   top: 0;
   left: 0;
-  height: 50svh;
+  height: 52svh;
   width: 100svw;
   display: flex;
   align-items: center;

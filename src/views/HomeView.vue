@@ -6,7 +6,6 @@ import { Icon } from '@iconify/vue';
 
 const data = reactive({
   decodedText: '7790360970053',
-  error: '',
   products: [
     {
   "_createdAt": "2023-05-19T23:55:35Z",
@@ -19,9 +18,22 @@ const data = reactive({
   "descripcion": "Salchichas Swift kids 6 u.",
   "precio": 260,
   "stock": 8
+},
+{
+  "_createdAt": "2023-05-19T21:10:38Z",
+  "_id": "42d4c9b3-fced-4d04-8191-0423e0fc2f3c",
+  "_rev": "0nOOWeg8GTCkLY5ImLCD8o",
+  "_type": "products",
+  "_updatedAt": "2023-05-19T23:50:49Z",
+  "categoria": "almacen",
+  "codigo": "7792900093246",
+  "descripcion": "Vinagre De Alcohol Dos Anclas 1 L",
+  "precio": 350,
+  "stock": 5
 }
 ],
-  cart: []
+  cart: [],
+  isEditing: false
 });
 
 
@@ -39,13 +51,6 @@ function fetchData(){
 
 const query = `*[_type == 'products']`;
 
-function checkear(){
-  if(data.decodedText != ''){
-
-  }
-  data.error = "No se ha ingresado ningun codigo"
-}
-
 function addQr(qr){
   data.decodedText = qr;
 }
@@ -54,6 +59,14 @@ function addItemToCart(x){
   data.cart.push(x);
 }
 
+function toggleItemEdit(i){
+  data.cart[i] 
+  data.isEditing = !data.isEditing;
+}
+
+function deleteItem(i){
+  data.cart.splice(i, 1)
+}
 //fetchData();
 
 </script>
@@ -69,13 +82,20 @@ function addItemToCart(x){
       <h2>${{ product.precio }}</h2> 
     </div>
     <button @click="addItemToCart(product)"><Icon class="icon" icon="bx:cart-add" /></button>
-    </div>
+  </div>
 
     </div>
       <div class="cart">
-        <div class="item-cart" v-for="item in data.cart">
-          <h4>{{ item.descripcion }} </h4>
-          <h2>${{ item.precio }}</h2> 
+        <div class="item-cart" v-for="(item,i) in data.cart">
+          <h4 @click="toggleItemEdit(i)">{{ item.descripcion }} </h4>
+
+          <div v-if="data.isEditing" class="item-cart-btns">
+            <button><Icon class="icon" icon="ph:minus-bold" /></button>
+            <button><Icon class="icon" icon="mingcute:add-fill" /></button>
+            <button @click="deleteItem(i)"><Icon class="icon red" icon="maki:cross" /></button>
+          </div>
+
+          <h2 @click="toggleItemEdit(i)">${{ item.precio }}</h2> 
         </div>
     </div>
 
@@ -87,6 +107,14 @@ function addItemToCart(x){
 </template>
 
 <style scoped>
+@keyframes fade-in {
+  from{opacity: 0;  transform: translateX(-100%);}
+  to{opacity: 1; transform: translateX(0);}
+}
+@keyframes add-item {
+  from{opacity: 0; height: 0;}
+  to{opacity: 1; height: 8svh;}
+}
 .preview-producto{
   background: var(--color-2);
   height: 12svh;
@@ -127,14 +155,22 @@ button{
   border-radius: 50px;
 }
 
+.red{
+  background: rgb(165, 0, 0);
+}
+
 .icon:hover{
   scale: 1.05
 }
 .icon:active{
   scale: 0.9;
 }
-
+.cart{
+  display: flex;
+  flex-direction: column-reverse;
+}
 .item-cart{
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -142,11 +178,24 @@ button{
   padding: 15px;
   color: var(--color-3);
   border: 2px solid var(--color-2);
+  background: var(--color-1);
+  animation: add-item 300ms ease-in-out forwards;
+  z-index: 5;
 }
 
 .item-cart>h2,.total>h3{
-  border: 2px solid;
   width: 30svw;
+}
+
+.item-cart-btns{
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  background: rgba(209, 209, 209, 0.3);
+  backdrop-filter: blur(5px);
+  animation: fade-in 500ms ease-in-out forwards;
+  z-index: 10;
 }
 
 .total{
@@ -159,6 +208,7 @@ button{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 100;
 }
 
 </style>

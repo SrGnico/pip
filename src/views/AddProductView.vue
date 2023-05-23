@@ -9,7 +9,7 @@ const product = reactive({
   codigo: '',
   categoria: '',
   precio: 0,
-  stock: 0
+  stock: 1
 });
 
 const data = reactive({
@@ -78,11 +78,7 @@ function cerrar(){
         <p class="label">Precio: (formato: 1350.50)</p> 
         <input v-model="product.precio" type="number" placeholder="Precio" name="precio" id="precio">
       </div>
-      <div class="flex-column">
-        <p class="label">Stock</p> 
-        <input v-model="product.stock" type="number" placeholder="Stock" name="stock" id="stock">
-      </div>
-      </div>
+    </div>
     <button class="btn-crear" @click="crearProducto">Crear</button>
 
     <div v-if="data.createdSucessfull || data.error" class="feedback" @click="cerrar">

@@ -17,7 +17,7 @@ const data = reactive({
   "codigo": "7790360970053",
   "descripcion": "Salchichas Swift kids 6 u.",
   "precio": 260,
-  "stock": 8
+  "stock": 1
 },
 {
   "_createdAt": "2023-05-19T21:10:38Z",
@@ -29,7 +29,7 @@ const data = reactive({
   "codigo": "7792900093246",
   "descripcion": "Vinagre De Alcohol Dos Anclas 1 L",
   "precio": 350,
-  "stock": 5
+  "stock": 1
 }
 ],
   cart: [],
@@ -82,6 +82,16 @@ function deleteItem(item, i){
   data.totalPriceSum -= item.precio;
   data.cart.splice(i, 1);
 }
+
+function addItem(i){
+  data.cart[i].stock++;
+  console.log(data.cart[i].stock)
+  data.totalPriceSum + data.cart[i].precio ;
+}
+function resItem(i){
+  data.cart[i].stock--;
+  data.totalPriceSum - data.cart[i].precio ;
+}
 //fetchData();
 
 </script>
@@ -130,12 +140,12 @@ function deleteItem(item, i){
           <h4 @click="toggleItemEdit(i)">{{ item.descripcion }} </h4>
 
           <div v-if="data.isEditing" class="item-cart-btns">
-            <button><Icon class="icon" icon="ph:minus-bold" /></button>
-            <button><Icon class="icon" icon="mingcute:add-fill" /></button>
+            <button @click="resItem(i)"><Icon class="icon" icon="ph:minus-bold" /></button>
+            <button @click="addItem(i)"><Icon class="icon" icon="mingcute:add-fill" /></button>
             <button @click="deleteItem(item,i)"><Icon class="icon red" icon="maki:cross" /></button>
           </div>
 
-          <h2 @click="toggleItemEdit(i)">${{ item.precio }}</h2> 
+          <h2 @click="toggleItemEdit(i)">${{ item.precio * item.stock }}</h2> 
         </div>
         
       </div>

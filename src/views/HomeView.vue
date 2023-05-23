@@ -3,7 +3,6 @@ import createClient from "../clients.js";
 import { reactive } from "vue";
 import Reader from '../components/Reader.vue';
 import { Icon } from '@iconify/vue';
-import { parseQuery } from "vue-router";
 
 const data = reactive({
   decodedText: '7790360970053',
@@ -74,14 +73,17 @@ function addItemToCart(x){
 
     </div>
       <div class="cart">
-        <div class="flex" v-for="item in data.cart">
+        <div class="item-cart" v-for="item in data.cart">
           <h4>{{ item.descripcion }} </h4>
           <h2>${{ item.precio }}</h2> 
         </div>
     </div>
 
   
-  
+    <div class="total">
+      <h2>Total:</h2>
+      <h3>{{  }}</h3>
+    </div>
 </template>
 
 <style scoped>
@@ -130,5 +132,32 @@ button{
 }
 .icon:active{
   scale: 0.9;
+}
+
+.item-cart{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 8svh;
+  padding: 15px;
+  color: var(--color-3);
+  border: 2px solid var(--color-2);
+}
+
+.item-cart>h2{
+  border: 2px solid brown;
+  width: 30svw;
+}
+
+.total{
+  position: fixed;
+  bottom: 7.9svh;
+  height: 5svh;
+  width: 100svw;
+  padding: 15px;
+  background-color: brown;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 </style>

@@ -27,7 +27,7 @@ nav {
   position: fixed;
   bottom: 0;
   width: 100svw;
-  height: 10svh;
+  height: 8svh;
   padding: 15px;
   display: flex;
   justify-content: space-around;

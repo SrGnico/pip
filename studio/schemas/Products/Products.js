@@ -46,5 +46,13 @@ export default {
         type: "number",
         title: "Precio (centavos poner con '.' despues de 3 cifras no poner nada ej: 1125.50)",
       }),
-    ]
+      defineField({
+        name: "isEditing",
+        type: "boolean",
+        title: "IsEditing",
+      }),
+    ],
+    initialValue: {
+      isEditing: false,
+    }
   }

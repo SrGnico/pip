@@ -17,7 +17,8 @@ const data = reactive({
   "codigo": "7790360970053",
   "descripcion": "Salchichas Swift kids 6 u.",
   "precio": 260,
-  "stock": 1
+  "stock": 1,
+  "isEditing": false
 },
 {
   "_createdAt": "2023-05-19T21:10:38Z",
@@ -29,12 +30,12 @@ const data = reactive({
   "codigo": "7792900093246",
   "descripcion": "Vinagre De Alcohol Dos Anclas 1 L",
   "precio": 350,
-  "stock": 1
+  "stock": 1,
+  "isEditing": false
 }
 ],
   cart: [],
   totalPriceSum: 0,
-  isEditing: false,
 });
 
 const manualPrice = reactive({
@@ -70,12 +71,10 @@ function addItemToCart(product){
     data.cart.push(manualPrice);
     data.totalPriceSum += manualPrice.precio;
   }
-  
- 
 }
 
 function toggleItemEdit(i){
-  data.isEditing = !data.isEditing;
+  data.cart[i].isEditing = !data.cart[i].isEditing;
 }
 
 function deleteItem(item, i){
@@ -137,14 +136,15 @@ function resItem(i){
       <div class="cart">
         <div class="item-cart clear"></div>
         <div class="item-cart" v-for="(item,i) in data.cart">
-          <h4 @click="toggleItemEdit(i)">{{ item.descripcion }} </h4>
-
-          <div v-if="data.isEditing" class="item-cart-btns">
+          <div v-if="item.isEditing" class="item-cart-btns">
             <button @click="resItem(i)"><Icon class="icon" icon="ph:minus-bold" /></button>
             <button @click="addItem(i)"><Icon class="icon" icon="mingcute:add-fill" /></button>
             <button @click="deleteItem(item,i)"><Icon class="icon red" icon="maki:cross" /></button>
           </div>
+
+          <h4 @click="toggleItemEdit(i)">{{ item.descripcion }} </h4>
           <h2>X {{ item.stock }}</h2>
+          
           <h2 @click="toggleItemEdit(i)">${{ item.precio * item.stock }}</h2> 
         </div>
         

@@ -9,7 +9,8 @@ const product = reactive({
   codigo: '',
   categoria: '',
   precio: 0,
-  stock: 1
+  stock: 1,
+  isEditing: false
 });
 
 const data = reactive({

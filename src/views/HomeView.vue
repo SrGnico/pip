@@ -312,11 +312,13 @@ button{
 
 .total{
   position: fixed;
-  bottom: 7.9svh;
-  height: 5svh;
+  bottom: 5svh;
+  height: 8svh;
   width: 100svw;
-  padding: 15px;
-  background: var(--color-2);
+  padding: 15px 15px 5svh 15px ;
+  background: var(--color-b5);
+  box-shadow: 0 0 5px var(--color-b3);
+  border-radius: 20px 20px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;

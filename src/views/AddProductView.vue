@@ -2,6 +2,8 @@
 import createClient from "../clients.js";
 import { reactive } from "vue";
 import Reader from '../components/Reader.vue';
+import { Icon } from '@iconify/vue';
+
 
 const product = reactive({
   _type: 'products',
@@ -59,30 +61,34 @@ function cerrar(){
     <input v-model="product.descripcion" type="text" placeholder="Descripcion" name="descripcion" id="descripcion"> 
     <p class="label">Codigo Manual o Escanear: </p> 
     <input v-model="product.codigo" type="text" placeholder="Codigo" name="codigo" id="codigo">
-    <p class="label">Categoria:</p> 
-    <select v-model="product.categoria" id="categoria" name="categoria">
-      <option value="fiambre">Fiambre</option>
-      <option value="almacen">Almacen</option>
-      <option value="perfumeria">Perfumeria</option>
-      <option value="limpieza">Limpieza</option>
-      <option value="lacteos">Lacteos</option>
-      <option value="panaderia">Panaderia</option>
-      <option value="bebidas">Bebidas</option>
-      <option value="promo">Promo</option>
-      <option value="congelados">Congelados</option>
-      <option value="suelto">Sueltos</option>
-      <option value="otros">Otros</option>
-    </select> 
-   
+  
     <div class="number-container">
       <div class="flex-column">
         <p class="label">Precio: (formato: 1350.50)</p> 
         <input v-model="product.precio" type="number" placeholder="Precio" name="precio" id="precio">
       </div>
+      <div class="flex-column">
+        <p class="label">Categoria:</p> 
+      <select v-model="product.categoria" id="categoria" name="categoria">
+        <option value="fiambre">Fiambre</option>
+        <option value="almacen">Almacen</option>
+        <option value="perfumeria">Perfumeria</option>
+        <option value="limpieza">Limpieza</option>
+        <option value="lacteos">Lacteos</option>
+        <option value="panaderia">Panaderia</option>
+        <option value="bebidas">Bebidas</option>
+        <option value="promo">Promo</option>
+        <option value="congelados">Congelados</option>
+        <option value="suelto">Sueltos</option>
+        <option value="otros">Otros</option>
+      </select> 
+   
+      </div>
     </div>
     <button class="btn-crear" @click="crearProducto">Crear</button>
 
     <div v-if="data.createdSucessfull || data.error" class="feedback" @click="cerrar">
+      <Icon class="icon" icon="maki:cross" />
       <h1 v-if="data.createdSucessfull">Producto agregado con exito!</h1>
       <h1 v-if="data.error">Faltan campos por agregar!</h1>
     </div>
@@ -97,8 +103,8 @@ function cerrar(){
   flex-direction: column;
   justify-content: space-between;
   padding: 15px;
-  background: var(--color-2);
-  color: var(--color-1);
+  background:linear-gradient(var(--color-b3), var(--color-b1)); 
+  color: var(--color-b5);
 }
 
 .titulo{
@@ -112,9 +118,11 @@ function cerrar(){
 }
 
 input, select, button{
-  border: 3px solid var(--color-1);
-  background: var(--color-3);
-  padding: 5px;
+  border: 0;
+  background: var(--color-b3);
+  box-shadow: inset 0 0 3px var(--color-b1);
+  color: var(--color-b5);
+  padding: 5px 15px;
   border-radius: 15px;
   height: 5svh;
   width: 100%;
@@ -132,8 +140,8 @@ input, select, button{
 }
 
 .btn-crear{
-  background: var(--color-4);
-  color: var(--color-3);
+  background: var(--color-b6);
+  color: var(--color-b5);
   margin: 10px auto;
   border: 0;
   height: 8svh;
@@ -146,13 +154,25 @@ input, select, button{
   position: absolute;
   top: 0;
   left: 0;
-  height: 52svh;
+  height: 55svh;
   width: 100svw;
+  padding: 75px 15px;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
-  background: rgba(209, 209, 209, 0.3);
+  background:linear-gradient(rgba(209, 209, 209, 0.3), var(--color-b1));
   backdrop-filter: blur(5px);
+}
+
+.icon{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem;
+  height: 50px;
+  width: 50px;
+  z-index: 101;
+  color: var(--color-b1);
 }
 
 

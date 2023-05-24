@@ -23,7 +23,9 @@ import { Icon } from '@iconify/vue';
 }
 
 nav {
-  background: var(--color-1);
+  background:linear-gradient(var(--color-b3), var(--color-b1));
+  box-shadow: 0 0 10px var(--color-b3);
+  border-radius: 30px 30px 0 0;
   position: fixed;
   bottom: 0;
   width: 100svw;
@@ -36,12 +38,18 @@ nav {
 }
 
 nav a {
-  color: var(--color-2);
+  color: var(--color-b4);
 }
 .icon{
   font-size: 2rem;
 }
 nav a.router-link-exact-active {
-  color: var(--color-4);
+  height: 45px;
+  width: 45px;
+  text-align: center;
+  background: var(--color-b5);
+  border-radius: 500px;
+  padding: 6px;
+  color: var(--color-b2);
 }
 </style>

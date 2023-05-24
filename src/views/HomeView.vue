@@ -38,10 +38,12 @@ const data = reactive({
   totalPriceSum: 0,
 });
 
-const manualPrice = reactive({
-  precio: 0,
-  descripcion: ''
-})
+function manualPrice(precio, descripcion){
+  this.precio = precio,
+  this.stock = 1,
+  this.descripcion = descripcion,
+  this.isEditing = false
+}
 
 /* DATA */
 function fetchData(){
@@ -61,35 +63,64 @@ function addQr(qr){
 }
 
 function addItemToCart(product){
-
-  if(manualPrice.precio == 0 && manualPrice.descripcion == '' && data.decodedText != ''){
+  /*Si ya existe, busca index y addItem(i) */
+  if(data.cart.find(element => element.codigo == product.codigo)){
+    let i = data.cart.findIndex(element => element.codigo == product.codigo);
+    addItem(i);
+    data.decodedText = '';
+    return
+  } 
+  
+  /*Checkea input qr */
+  else if(data.decodedText != ''){
     data.cart.push(product);
     data.totalPriceSum += product.precio; 
     data.decodedText = '';
   }
-  else if(data.decodedText == '' && !manualPrice.precio == 0 && !manualPrice.descripcion == '' ){
-    data.cart.push(manualPrice);
-    data.totalPriceSum += manualPrice.precio;
+  
+}
+
+function addItemManualToCart(){
+  let form = document.querySelector('#form');
+  let precio = document.querySelector("#precio").value;
+  let descripcion = document.querySelector("#categoria").value;
+  /*Checkea input manual */
+  if(data.decodedText == '' && precio != 0 && descripcion != '' ){
+    let product = new manualPrice(precio, descripcion)
+    data.cart.push(product);
+    data.totalPriceSum += parseInt(precio);
+
+    form.reset()
   }
 }
 
 function toggleItemEdit(i){
-  data.cart[i].isEditing = !data.cart[i].isEditing;
+  if(data.cart[i].isEditing == false){
+    for(const item of data.cart){item.isEditing = false}
+    data.cart[i].isEditing = true
+  }else{
+    data.cart[i].isEditing = false
+  }
 }
 
 function deleteItem(item, i){
-  data.totalPriceSum -= item.precio;
+  data.totalPriceSum -= (item.precio * item.stock);
   data.cart.splice(i, 1);
 }
 
 function addItem(i){
   data.cart[i].stock++;
-  console.log(data.cart[i].stock)
-  data.totalPriceSum += data.cart[i].precio ;
+  data.totalPriceSum += parseInt(data.cart[i].precio) ;
 }
-function resItem(i){
-  data.cart[i].stock--;
-  data.totalPriceSum -= data.cart[i].precio ;
+function resItem(item, i){
+  if(data.cart[i].stock == 1){
+    deleteItem(item, i);
+  }
+  else{
+    data.cart[i].stock--;
+   data.totalPriceSum -= parseInt(data.cart[i].precio) ;
+  }
+ 
 }
 //fetchData();
 
@@ -111,11 +142,11 @@ function resItem(i){
     </div>
     <div v-show="data.decodedText == ''">
       <div class="preview-producto">
-        <div class="flex-row">
+        <form class="flex-row" id="form">
 
           <div class="flex">
             <h4>Categoria</h4>
-            <select class="input" v-model="manualPrice.descripcion" id="categoria" name="categoria">
+            <select class="input" id="categoria" name="categoria">
               <option value="Fiambre">Fiambre</option>
               <option value="Promo">Promo</option>
               <option value="Suelto">Sueltos</option>
@@ -125,27 +156,28 @@ function resItem(i){
 
           <div class="flex">
             <h4>Precio</h4>
-            <input class="input" type="number" v-model="manualPrice.precio"/>
+            <input class="input" type="number" id="precio" name="precio"/>
           </div>
           
-        </div>
-        <button @click="addItemToCart()"><Icon class="icon" icon="bx:cart-add" /></button>
+        </form>
+        <button @click="addItemManualToCart()"><Icon class="icon" icon="bx:cart-add" /></button>
       </div>
     </div>
 
       <div class="cart">
         <div class="item-cart clear"></div>
-        <div class="item-cart" v-for="(item,i) in data.cart">
+        <div class="item-cart-container" v-for="(item,i) in data.cart">
           <div v-if="item.isEditing" class="item-cart-btns">
-            <button @click="resItem(i)"><Icon class="icon" icon="ph:minus-bold" /></button>
+            <button @click="resItem(item, i)"><Icon class="icon" icon="ph:minus-bold" /></button>
             <button @click="addItem(i)"><Icon class="icon" icon="mingcute:add-fill" /></button>
             <button @click="deleteItem(item,i)"><Icon class="icon red" icon="maki:cross" /></button>
           </div>
-
-          <h4 @click="toggleItemEdit(i)">{{ item.descripcion }} </h4>
-          <h2>X {{ item.stock }}</h2>
-          
-          <h2 @click="toggleItemEdit(i)">${{ item.precio * item.stock }}</h2> 
+          <div class="item-cart"  @click="toggleItemEdit(i)">
+            <h4 >{{ item.descripcion }} </h4>
+            <h2>X {{ item.stock }}</h2>
+            
+            <h2 >${{ item.precio * item.stock }}</h2>
+          </div> 
         </div>
         
       </div>
@@ -213,7 +245,7 @@ button{
 }
 
 
-.flex>h2,h4{
+.flex>h2,h4,.item-cart>h2,h4{
   margin: 0;
 }
 
@@ -245,24 +277,27 @@ button{
 
 .item-cart{
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns:40svw 30svw 30svw;
+  justify-items: center;
   height: 8svh;
   padding: 15px;
+  border-radius: 5px;
   color: var(--color-3);
   border: 2px solid var(--color-2);
   background: var(--color-1);
   animation: add-item 300ms ease-in-out forwards;
   z-index: 5;
 }
+
+.item-cart-container{
+  position: relative;
+}
+
 .clear{
   border: 0;
 }
 
-.item-cart>h2,.total>h2{
-  width: 30svw;
-}
 
 .item-cart-btns{
   position: absolute;
@@ -272,7 +307,7 @@ button{
   background: rgba(209, 209, 209, 0.3);
   backdrop-filter: blur(5px);
   animation: fade-in 500ms ease-in-out forwards;
-  z-index: 10;
+  z-index: 100;
 }
 
 .total{

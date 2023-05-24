@@ -64,7 +64,7 @@ function cerrar(){
   
     <div class="number-container">
       <div class="flex-column">
-        <p class="label">Precio: (formato: 1350.50)</p> 
+        <p class="label">Precio: (1350.50)</p> 
         <input v-model="product.precio" type="number" placeholder="Precio" name="precio" id="precio">
       </div>
       <div class="flex-column">

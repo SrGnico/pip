@@ -8,6 +8,7 @@ const emit = defineEmits(['qr'])
 const html5QrCode = new Html5Qrcode("reader");
 const qrCodeSuccessCallback = (decodedText) => {
     /* handle success */
+    document.getElementById("pip").play();
    // stopQr();
     emit('qr', decodedText)
 };
@@ -30,5 +31,9 @@ function stopQr(){
 </script>
 
 <template>
-    <div></div>
+    <div>
+      <audio id="pip">
+        <source src="../../public/pip.mp3">
+      </audio>
+    </div>
 </template>

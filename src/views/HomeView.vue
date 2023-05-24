@@ -128,9 +128,9 @@ function resItem(item, i){
 
 <template>
   <Reader @qr="addQr"/>
-  <input v-model="data.decodedText" type="text" placeholder="Ingresar manualmente"> <br>
+  
   <div class="contenedor-principal">
-    
+    <input class="input-manual" v-model="data.decodedText" type="text" placeholder="Ingresar manualmente">
     <div v-for="(product,i) in data.products">
       <div class="preview-producto" v-if="product.codigo == data.decodedText">
         <div class="flex">
@@ -202,15 +202,18 @@ function resItem(item, i){
 .contenedor-principal{
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: auto;
   margin-bottom: 5svh;
   min-height: 52svh;
-  background: var(--color-1);
+  background:linear-gradient(var(--color-b3), var(--color-b1)); 
 }
 .preview-producto{
-  background: var(--color-2);
+  background:var(--color-b5);
+  border-radius: 30px;
   height: 12svh;
-  width: 100svw;
+  width: calc(100svw - 10px);
+  margin: 5px 5px;
   padding: 15px;
   border: 2px solid var(--color-1);
   display: flex;
@@ -236,12 +239,27 @@ button{
 }
 
 .input{
-  border: 3px solid var(--color-1);
-  background: var(--color-3);
+  border: 0;
+  background: var(--color-b3);
+  box-shadow: inset 0 0 3px var(--color-b1);
+  color: var(--color-b5);
   padding: 5px;
   border-radius: 15px;
   height: 5svh;
-  width: 100%;
+  width: 90%;
+}
+
+.input-manual{
+  border: 0;
+  background: var(--color-b5);
+  box-shadow: inset 0 0 3px var(--color-b1);
+  color: var(--color-b1);
+  margin-top: 5px;
+  padding: 5px;
+  border-radius: 15px;
+  height: 5svh;
+  text-align: center;
+  width: 40%;
 }
 
 
@@ -251,12 +269,12 @@ button{
 
 
 .icon{
-  background:var(--color-4);
-  color: var(--color-3);
+  background:var(--color-b6);
+  color: var(--color-b1);
   height: 7svh;
   width: 7svh;
   padding: 2px;
-  border: 2px solid var(--color-3);
+  border: 2px solid var(--color-b1);
   border-radius: 50px;
 }
 
@@ -272,20 +290,22 @@ button{
 }
 .cart{
   display: flex;
+  gap: 5px;
   flex-direction: column-reverse;
 }
 
 .item-cart{
   position: relative;
   display: grid;
-  grid-template-columns:40svw 30svw 30svw;
+  grid-template-columns:40svw 20svw 40svw;
   justify-items: center;
   height: 8svh;
+  width: 100svw;
   padding: 15px;
-  border-radius: 5px;
-  color: var(--color-3);
-  border: 2px solid var(--color-2);
-  background: var(--color-1);
+  border-radius: 30px;
+  color: var(--color-b5);
+  border: 2px solid var(--color-b5);
+  background: linear-gradient(var(--color-b3), var(--color-b2));
   animation: add-item 300ms ease-in-out forwards;
   z-index: 5;
 }
@@ -296,14 +316,16 @@ button{
 
 .clear{
   border: 0;
+  background: transparent;
 }
 
 
 .item-cart-btns{
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 1px;
+  left: 1px;
   display: flex;
+  border-radius: 30px 0 0 30px;
   background: rgba(209, 209, 209, 0.3);
   backdrop-filter: blur(5px);
   animation: fade-in 500ms ease-in-out forwards;
@@ -315,10 +337,10 @@ button{
   bottom: 5svh;
   height: 8svh;
   width: 100svw;
-  padding: 15px 15px 5svh 15px ;
+  padding: 15px 25px 5svh 25px ;
   background: var(--color-b5);
   box-shadow: 0 0 5px var(--color-b3);
-  border-radius: 20px 20px 0 0;
+  border-radius: 30px 30px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;

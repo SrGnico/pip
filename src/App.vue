@@ -2,10 +2,11 @@
 import { Icon } from '@iconify/vue';
 
 </script>
-
 <template>
     <router-view/>
   <nav>
+    <router-link to="/"><Icon class="icon" icon="bxs:file" /></router-link>
+    <router-link to="/"><Icon class="icon" icon="mdi:tag-edit" /></router-link>
     <router-link to="/"><Icon class="icon" icon="fluent:home-48-filled" /></router-link>
     <router-link to="/addProduct"><Icon class="icon" icon="mdi:tag-add" /></router-link>
   </nav>

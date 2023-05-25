@@ -188,10 +188,20 @@ data.isToggleTotal = !data.isToggleTotal;
       </div>
 
   
-    <div class="total" @click="toggleTotal" :class="{ toggle: data.isToggleTotal }">
-      <h2>Total:</h2>
-      <Icon class="total-icon" icon="ep:arrow-up-bold" :class="{ flipped: data.isToggleTotal }" />
-      <h2>${{ data.totalPriceSum }}</h2>
+    <div class="total-container" :class="{ toggle: data.isToggleTotal }">
+      <div class="total-num">
+        <h2>Total:</h2>
+        <Icon class="total-icon" icon="ep:arrow-up-bold" @click="toggleTotal"  :class="{ flipped: data.isToggleTotal }" />
+        <h2>${{ data.totalPriceSum }}</h2>
+      </div>
+
+      <div class="total-toggle-true">
+        <select class="input" id="medioDePago" name="medioDePago">
+          <option value="Efectivo">Efectivo</option>
+          <option value="Transferencia">Transferencia</option>
+        </select> 
+        <button @click="cobrar"><Icon class="icon" icon="mingcute:check-fill" /></button>
+      </div>
     </div>
   </div>
 </template>
@@ -338,21 +348,30 @@ button{
   z-index: 100;
 }
 
-.total{
+.total-container{
   position: fixed;
   bottom: 0;
   height: 15svh;
   width: 100svw;
-  padding: 15px 25px 10svh 25px ;
-  background: var(--color-b5);
+  background: linear-gradient(var(--color-b5), var(--color-b3));
   box-shadow: 0 0 5px var(--color-b3);
   border-radius: 30px 30px 0 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   z-index: 100;
 }
 
+.total-num{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:10px 25px;
+  width: 100svw;
+}
+.total-num>h2{
+  margin: 0;
+}
 .total-icon{
   position: absolute;
   top: 10px;
@@ -364,9 +383,17 @@ button{
   rotate: 180deg;
 }
 .toggle{
-  height: 60svh;
+  height: 30svh;
+
 }
 
-
+.total-toggle-true{
+  width: 100svw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  gap: 25px;
+}
 
 </style>

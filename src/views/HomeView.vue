@@ -36,6 +36,7 @@ const data = reactive({
 ],
   cart: [],
   totalPriceSum: 0,
+  isToggleTotal: false
 });
 
 function manualPrice(precio, descripcion){
@@ -122,6 +123,10 @@ function resItem(item, i){
   }
  
 }
+
+function toggleTotal(){
+data.isToggleTotal = !data.isToggleTotal;
+}
 //fetchData();
 
 </script>
@@ -183,8 +188,9 @@ function resItem(item, i){
       </div>
 
   
-    <div class="total">
+    <div class="total" @click="toggleTotal" :class="{ toggle: data.isToggleTotal }">
       <h2>Total:</h2>
+      <Icon class="total-icon" icon="ep:arrow-up-bold" :class="{ flipped: data.isToggleTotal }" />
       <h2>${{ data.totalPriceSum }}</h2>
     </div>
   </div>
@@ -301,7 +307,7 @@ button{
   justify-items: center;
   height: 8svh;
   width: 100svw;
-  padding: 15px;
+  padding: 10px;
   border-radius: 30px;
   color: var(--color-b5);
   border: 2px solid var(--color-b5);
@@ -334,10 +340,10 @@ button{
 
 .total{
   position: fixed;
-  bottom: 5svh;
-  height: 8svh;
+  bottom: 0;
+  height: 15svh;
   width: 100svw;
-  padding: 15px 25px 5svh 25px ;
+  padding: 15px 25px 10svh 25px ;
   background: var(--color-b5);
   box-shadow: 0 0 5px var(--color-b3);
   border-radius: 30px 30px 0 0;
@@ -346,5 +352,21 @@ button{
   justify-content: space-between;
   z-index: 100;
 }
+
+.total-icon{
+  position: absolute;
+  top: 10px;
+  left: calc(50svw - .75rem);
+  font-size: 1.5rem;
+}
+
+.flipped{
+  rotate: 180deg;
+}
+.toggle{
+  height: 60svh;
+}
+
+
 
 </style>

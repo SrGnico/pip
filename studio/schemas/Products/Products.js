@@ -49,10 +49,16 @@ export default {
       defineField({
         name: "isEditing",
         type: "boolean",
-        title: "IsEditing",
+        title: "IsEditing (ignorar)",
+      }),
+      defineField({
+        name: "cantidad",
+        type: "number",
+        title: "Cantidad (ignorar)",
       }),
     ],
     initialValue: {
       isEditing: false,
+      cantidad: 1
     }
   }

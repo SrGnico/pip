@@ -18,7 +18,8 @@ const data = reactive({
   "descripcion": "Salchichas Swift kids 6 u.",
   "precio": 260,
   "stock": 1,
-  "isEditing": false
+  "isEditing": false,
+  "cantidad": 1
 },
 {
   "_createdAt": "2023-05-19T21:10:38Z",
@@ -31,7 +32,8 @@ const data = reactive({
   "descripcion": "Vinagre De Alcohol Dos Anclas 1 L",
   "precio": 350,
   "stock": 1,
-  "isEditing": false
+  "isEditing": false,
+  "cantidad": 1
 }
 ],
   cart: [],
@@ -42,6 +44,7 @@ const data = reactive({
 function manualPrice(precio, descripcion){
   this.precio = precio,
   this.stock = 1,
+  this.cantidad = 1,
   this.descripcion = descripcion,
   this.isEditing = false
 }
@@ -105,23 +108,22 @@ function toggleItemEdit(i){
 }
 
 function deleteItem(item, i){
-  data.totalPriceSum -= (item.precio * item.stock);
+  data.totalPriceSum -= (item.precio * item.cantidad);
   data.cart.splice(i, 1);
 }
 
 function addItem(i){
-  data.cart[i].stock++;
+  data.cart[i].cantidad++;
   data.totalPriceSum += parseInt(data.cart[i].precio) ;
 }
 function resItem(item, i){
-  if(data.cart[i].stock == 1){
+  if(data.cart[i].cantidad == 1){
     deleteItem(item, i);
   }
   else{
-    data.cart[i].stock--;
-   data.totalPriceSum -= parseInt(data.cart[i].precio) ;
+    data.cart[i].cantidad--;
+    data.totalPriceSum -= parseInt(data.cart[i].precio) ;
   }
- 
 }
 
 function toggleTotal(){
@@ -147,7 +149,7 @@ data.isToggleTotal = !data.isToggleTotal;
     </div>
     <div v-show="data.decodedText == ''">
       <div class="preview-producto">
-        <form class="flex-row" id="form">
+        <form class="flex-row" id="form"  @submit.prevent>
 
           <div class="flex">
             <h4>Categoria</h4>

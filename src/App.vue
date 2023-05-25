@@ -6,7 +6,7 @@ import { Icon } from '@iconify/vue';
     <router-view/>
   <nav>
     <router-link to="/"><Icon class="icon" icon="bxs:file" /></router-link>
-    <router-link to="/"><Icon class="icon" icon="mdi:tag-edit" /></router-link>
+    <router-link to="/editProduct"><Icon class="icon" icon="mdi:tag-edit" /></router-link>
     <router-link to="/"><Icon class="icon" icon="fluent:home-48-filled" /></router-link>
     <router-link to="/addProduct"><Icon class="icon" icon="mdi:tag-add" /></router-link>
   </nav>
@@ -28,9 +28,9 @@ nav {
   box-shadow: 0 0 10px var(--color-b3);
   border-radius: 30px 30px 0 0;
   position: fixed;
-  bottom: 0;
+  bottom: -.1svh;
   width: 100svw;
-  height: 8svh;
+  height: 8.1svh;
   padding: 15px;
   display: flex;
   justify-content: space-around;

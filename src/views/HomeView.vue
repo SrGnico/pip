@@ -241,11 +241,14 @@ data.isToggleTotal = !data.isToggleTotal;
   flex-direction: column;
   gap: 15px;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 .flex-row{
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 button{
@@ -314,10 +317,11 @@ button{
   position: relative;
   display: grid;
   grid-template-columns:40svw 20svw 40svw;
+  align-items: center;
   justify-items: center;
-  height: 8svh;
+  height: 10svh;
   width: 100svw;
-  padding: 10px;
+  padding: 0 10px;
   border-radius: 30px;
   color: var(--color-b5);
   border: 2px solid var(--color-b5);

@@ -4,8 +4,18 @@ import { reactive } from "vue";
 import Reader from '../components/Reader.vue';
 import { Icon } from '@iconify/vue';
 
+function fetchData(){
+  createClient.fetch(`*[_type == 'products']`).then(
+    (res) => {
+      data.products = res},
+    (error) => {
+      data.error = error;
+    }
+  );
+};
 
 const product = reactive({
+  _id: '',
   _type: 'products',
   descripcion: '',
   codigo: '',
@@ -16,22 +26,25 @@ const product = reactive({
 });
 
 const data = reactive({
+  decodedText: '',
+  products: [],
+  editingProduct: [],
   createdSucessfull: false,
   error: false
 })
 
-function crearProducto(){
+function editarProducto(_id,descripcion, categoria, precio, stock){
   data.createdSucessfull = false;
   data.error = false;
+
   if(product.descripcion != '' &&
      product.codigo != '' &&
      product.categoria != '' &&
      product.precio != '' &&
      product.stock != ''){
-
-      createClient.create(product).then((res) => {
-        console.log('Producto creado con exito, id es:'+ res._id)
-      });
+    createClient.patch(_id).set({descripcion, categoria, precio, stock}).commit().then((res) => {
+    console.log('Producto actualizado con exito, id es:'+ res._id)
+  });
       data.createdSucessfull = true;
       product.descripcion = '';
       product.codigo = '';
@@ -44,13 +57,22 @@ function crearProducto(){
 }
 
 function addQr(qr){
+  data.decodedText = qr;
+  let i = data.products.findIndex(element => element.codigo == qr);
+  product._id = data.products[i]._id;
+  product.descripcion = data.products[i].descripcion;
   product.codigo = qr;
+  product.categoria = data.products[i].categoria;
+  product.precio = data.products[i].precio;
+  product.stock = data.products[i].stock;
 }
 
 function cerrar(){
   data.createdSucessfull = false;
   data.error = false;
 }
+
+fetchData();
 </script>
 
 <template>
@@ -60,7 +82,7 @@ function cerrar(){
     <p class="label"> Descripcion:</p>
     <input v-model="product.descripcion" type="text" placeholder="Descripcion" name="descripcion" id="descripcion"> 
     <p class="label">Codigo Manual o Escanear: </p> 
-    <input v-model="product.codigo" type="text" placeholder="Codigo" name="codigo" id="codigo">
+    <input v-model="product.codigo" type="text" placeholder="Codigo" name="codigo" id="codigo" @change="addQr(product.codigo)">
   
     <div class="number-container">
       <div class="flex-column">
@@ -85,11 +107,11 @@ function cerrar(){
    
       </div>
     </div>
-    <button class="btn-crear" @click="crearProducto">Editar</button>
+    <button class="btn-crear" @click="editarProducto(product._id, product.descripcion, product.categoria, product.precio, product.stock)">Editar</button>
 
     <div v-if="data.createdSucessfull || data.error" class="feedback" @click="cerrar">
       <Icon class="icon" icon="maki:cross" />
-      <h1 v-if="data.createdSucessfull">Producto agregado con exito!</h1>
+      <h1 v-if="data.createdSucessfull">Producto actualizado con exito!</h1>
       <h1 v-if="data.error">Faltan campos por agregar!</h1>
     </div>
   </div>

@@ -5,37 +5,8 @@ import Reader from '../components/Reader.vue';
 import { Icon } from '@iconify/vue';
 
 const data = reactive({
-  decodedText: '7790360970053',
-  products: [
-    {
-  "_createdAt": "2023-05-19T23:55:35Z",
-  "_id": "e57fa00f-5df5-4f74-9b23-521969182f59",
-  "_rev": "0nOOWeg8GTCkLY5ImLDNYP",
-  "_type": "products",
-  "_updatedAt": "2023-05-19T23:55:35Z",
-  "categoria": "almacen",
-  "codigo": "7790360970053",
-  "descripcion": "Salchichas Swift kids 6 u.",
-  "precio": 260,
-  "stock": 1,
-  "isEditing": false,
-  "cantidad": 1
-},
-{
-  "_createdAt": "2023-05-19T21:10:38Z",
-  "_id": "42d4c9b3-fced-4d04-8191-0423e0fc2f3c",
-  "_rev": "0nOOWeg8GTCkLY5ImLCD8o",
-  "_type": "products",
-  "_updatedAt": "2023-05-19T23:50:49Z",
-  "categoria": "almacen",
-  "codigo": "7792900093246",
-  "descripcion": "Vinagre De Alcohol Dos Anclas 1 L",
-  "precio": 350,
-  "stock": 1,
-  "isEditing": false,
-  "cantidad": 1
-}
-],
+  decodedText: '',
+  products: [],
   cart: [],
   totalPriceSum: 0,
   isToggleTotal: false
@@ -51,7 +22,7 @@ function manualPrice(precio, descripcion){
 
 /* DATA */
 function fetchData(){
-  createClient.fetch(query).then(
+  createClient.fetch(`*[_type == 'products']`).then(
     (res) => {
       data.products = res},
     (error) => {
@@ -60,7 +31,6 @@ function fetchData(){
   );
 };
 
-const query = `*[_type == 'products']`;
 
 function addQr(qr){
   data.decodedText = qr;
@@ -129,8 +99,12 @@ function resItem(item, i){
 function toggleTotal(){
 data.isToggleTotal = !data.isToggleTotal;
 }
-//fetchData();
+fetchData();
 
+
+function cobrar(){
+  
+}
 </script>
 
 <template>
@@ -181,9 +155,9 @@ data.isToggleTotal = !data.isToggleTotal;
           </div>
           <div class="item-cart"  @click="toggleItemEdit(i)">
             <h4 >{{ item.descripcion }} </h4>
-            <h2>X {{ item.stock }}</h2>
+            <h2>X {{ item.cantidad }}</h2>
             
-            <h2 >${{ item.precio * item.stock }}</h2>
+            <h2 >${{ item.precio * item.cantidad }}</h2>
           </div> 
         </div>
         

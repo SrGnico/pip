@@ -22,7 +22,9 @@ const data = reactive({
   efectivoSum: 0,
   transferenciaSum: 0,
   cantidadItems: 0,
-  isToggleTotal: false
+  isToggleTotal: false,
+  cobrado: false,
+  error: false
 });
 
 if(localStorage.getItem('cart')){
@@ -136,6 +138,14 @@ data.isToggleTotal = !data.isToggleTotal;
 //fetchData();
 
 async function cobrar(_id){
+
+  data.cobrado = false;
+  data.error = false;
+
+  if(data.totalPriceSum === 0){
+    data.error = true;
+    return
+  }
   const medioDePago = document.querySelector('#medioDePago').value;
 
   if(medioDePago == 'Efectivo'){
@@ -174,6 +184,12 @@ async function cobrar(_id){
   data.totalPriceSum = 0;
   data.transferenciaSum = 0;
   data.cantidadItems = 0;
+  data.cobrado = true;
+}
+
+function cerrar(){
+  data.cobrado = false;
+  data.error = false;
 }
 
 fetchData();
@@ -250,6 +266,11 @@ fetchData();
         </select> 
         <button @click="cobrar(fecha)"><Icon class="icon" icon="mingcute:check-fill" /></button>
       </div>
+      <div v-if="data.cobrado || data.error" class="feedback" @click="cerrar">
+      <Icon class="feedback-icon" icon="maki:cross" />
+      <h1 v-if="data.cobrado">Cobrado con exito!</h1>
+      <h1 v-if="data.error">El carrito esta vacio!</h1>
+    </div>
     </div>
   </div>
 </template>
@@ -446,6 +467,33 @@ button{
   align-items: center;
   padding: 25px;
   gap: 25px;
+}
+
+.feedback{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30svh;
+  width: 100svw;
+  padding: 75px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px 30px 0 0;
+  background:linear-gradient(rgba(209, 209, 209, 0.3), var(--color-b1));
+  color: var(--color-b5);
+  backdrop-filter: blur(5px);
+}
+
+.feedback-icon{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem;
+  height: 50px;
+  width: 50px;
+  z-index: 101;
+  color: var(--color-b1);
 }
 
 </style>

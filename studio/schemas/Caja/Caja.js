@@ -34,13 +34,19 @@ export default{
             name: "productosVendidos",
             type: "number",
             title: "Productos vendidos",
-        })
+        }),
+        defineField({
+            name: "isEditing",
+            type: "boolean",
+            title: "IsEditing (ignorar)",
+          }),
     ],
     initialValue: {
         total: 0,
         efectivo: 0,
         transferencia: 0,
         cantidadDeVentas: 0,
-        productosVendidos: 0
+        productosVendidos: 0,
+        isEditing: false
     }
 }

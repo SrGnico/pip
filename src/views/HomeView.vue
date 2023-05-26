@@ -141,7 +141,7 @@ async function cobrar(_id){
   }
   
   await createClient
-    .createIfNotExists({_type:"cajas", _id, fecha: fecha})
+    .createIfNotExists({_type:"cajas", _id, fecha: fecha, isEditing:false})
     .then((res) =>{
       console.log(res)
     })

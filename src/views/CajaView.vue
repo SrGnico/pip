@@ -37,7 +37,8 @@ const data = reactive({
   "productosVendidos": 3,
   "total": 1900,
   "transferencia": 0
-}]
+}],
+
 });
 
 //fetchData();
@@ -45,8 +46,15 @@ const data = reactive({
 
 <template>
     <div class="principal-container">
-        <div class="caja" v-for="caja in data.cajas">
+        <div class="caja" v-for="(caja, i) in data.cajas">
             <h1>{{ caja.fecha}}</h1>
+            <ul v-if="">
+                <li>Total: ${{ caja.total }}</li>
+                <li>Total Efectivo: ${{ caja.efectivo }}</li>
+                <li>Total Transferencia: ${{ caja.transferencia }}</li>
+                <li>Productos vendidos: {{ caja.productosVendidos }}</li>
+                <li>Cantidad de ventas: {{ caja.cantidadDeVentas }}</li>
+            </ul>
         </div>
     </div>
 </template>
@@ -63,8 +71,11 @@ const data = reactive({
 }
 
 .caja{
-    height: 8svh;
+    height: auto;
     width: 100svw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 1svh;
     color: var(--color-b5);
     border: 3px solid var(--color-b5);
@@ -73,4 +84,11 @@ const data = reactive({
 .caja>h1{
     margin: 0;
 }
+
+.caja> ul{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 </style>

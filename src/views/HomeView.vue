@@ -17,6 +17,9 @@ const data = reactive({
   products: [],
   cart: [],
   totalPriceSum: 0,
+  efectivoSum: 0,
+  transferenciaSum: 0,
+  cantidadItems: 0,
   isToggleTotal: false
 });
 
@@ -57,6 +60,7 @@ function addItemToCart(product){
   else if(data.decodedText != ''){
     data.cart.push(product);
     data.totalPriceSum += product.precio; 
+    data.cantidadItems++;
     data.decodedText = '';
   }
   
@@ -71,8 +75,9 @@ function addItemManualToCart(){
     let product = new manualPrice(precio, descripcion)
     data.cart.push(product);
     data.totalPriceSum += parseInt(precio);
+    data.cantidadItems++;
 
-    form.reset()
+    form.reset();
   }
 }
 
@@ -87,12 +92,14 @@ function toggleItemEdit(i){
 
 function deleteItem(item, i){
   data.totalPriceSum -= (item.precio * item.cantidad);
+  data.cantidadItems -= (item.cantidad)
   data.cart.splice(i, 1);
 }
 
 function addItem(i){
   data.cart[i].cantidad++;
-  data.totalPriceSum += parseInt(data.cart[i].precio) ;
+  data.cantidadItems++;
+  data.totalPriceSum += parseInt(data.cart[i].precio);
 }
 function resItem(item, i){
   if(data.cart[i].cantidad == 1){
@@ -100,7 +107,9 @@ function resItem(item, i){
   }
   else{
     data.cart[i].cantidad--;
-    data.totalPriceSum -= parseInt(data.cart[i].precio) ;
+    data.cantidadItems--;
+    data.totalPriceSum -= parseInt(data.cart[i].precio);
+
   }
 }
 
@@ -110,19 +119,40 @@ data.isToggleTotal = !data.isToggleTotal;
 
 
 //fetchData();
-/*
-const date = new Date();
 
-const year = date.getFullYear();
-const month = date.getMonth() + 1;
-const day = date.getDate();
+async function cobrar(_id){
+  const medioDePago = document.querySelector('#medioDePago').value;
 
-const fecha = [day,month, year].join('-');
-console.log(withHyphens); // 👉️ "2023-1-4"
 
-*/
-function cobrar(){
-  
+  if(medioDePago == 'Efectivo'){
+    data.efectivoSum = data.totalPriceSum;
+  }
+  data.transferenciaSum = data.totalPriceSum;
+  await createClient
+    .createIfNotExists({_type:"cajas", _id, fecha: fecha})
+    .then((res) =>{
+      console.log(res)
+    })
+    .catch((err)=>{
+      console.log(err)
+    });
+
+  await createClient
+    .patch({_id})
+    .set({total: data.totalPriceSum})
+    .commit()
+    .then((res) =>{
+      console.log(res)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+
+  data.cart = [];
+  data.efectivoSum = 0;
+  data.totalPriceSum = 0;
+  data.transferenciaSum = 0;
+  data.cantidadItems = 0;
 }
 </script>
 
@@ -184,9 +214,9 @@ function cobrar(){
 
   
     <div class="total-container" :class="{ toggle: data.isToggleTotal }">
-      <div class="total-num">
+      <div class="total-num" @click="toggleTotal">
         <h2>Total:</h2>
-        <Icon class="total-icon" icon="ep:arrow-up-bold" @click="toggleTotal"  :class="{ flipped: data.isToggleTotal }" />
+        <Icon class="total-icon" icon="ep:arrow-up-bold" :class="{ flipped: data.isToggleTotal }" />
         <h2>${{ data.totalPriceSum }}</h2>
       </div>
 
@@ -195,7 +225,7 @@ function cobrar(){
           <option value="Efectivo">Efectivo</option>
           <option value="Transferencia">Transferencia</option>
         </select> 
-        <button @click="cobrar"><Icon class="icon" icon="mingcute:check-fill" /></button>
+        <button @click="cobrar(fecha)"><Icon class="icon" icon="mingcute:check-fill" /></button>
       </div>
     </div>
   </div>

@@ -35,5 +35,12 @@ export default{
             type: "number",
             title: "Productos vendidos",
         })
-    ]
+    ],
+    initialValue: {
+        total: 0,
+        efectivo: 0,
+        transferencia: 0,
+        cantidadDeVentas: 0,
+        productosVendidos: 0
+    }
 }

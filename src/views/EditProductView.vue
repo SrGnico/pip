@@ -72,7 +72,7 @@ function cerrar(){
   data.error = false;
 }
 
-fetchData();
+//fetchData();
 </script>
 
 <template>

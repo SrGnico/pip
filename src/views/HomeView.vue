@@ -4,6 +4,14 @@ import { reactive } from "vue";
 import Reader from '../components/Reader.vue';
 import { Icon } from '@iconify/vue';
 
+const date = new Date();
+
+const year = date.getFullYear();
+const month = date.getMonth() + 1;
+const day = date.getDate();
+
+const fecha = [day,month, year].join('-');``
+
 const data = reactive({
   decodedText: '',
   products: [],
@@ -99,9 +107,20 @@ function resItem(item, i){
 function toggleTotal(){
 data.isToggleTotal = !data.isToggleTotal;
 }
-fetchData();
 
 
+//fetchData();
+/*
+const date = new Date();
+
+const year = date.getFullYear();
+const month = date.getMonth() + 1;
+const day = date.getDate();
+
+const fecha = [day,month, year].join('-');
+console.log(withHyphens); // 👉️ "2023-1-4"
+
+*/
 function cobrar(){
   
 }

@@ -7,8 +7,8 @@ export default{
     fields: [
         defineField({
             name: "fecha",
-            type: "date",
-            title: "Fecha",
+            type: "string",
+            title: "Fecha (25-05-2023)",
         }),
         defineField({
             name: "total",
@@ -26,12 +26,12 @@ export default{
             title: "Transferencia",
         }),
         defineField({
-            name: "cantidad-de-ventas",
+            name: "cantidadDeVentas",
             type: "number",
             title: "Cantidad De Ventas",
         }),
         defineField({
-            name: "productos-venndidos",
+            name: "productosVendidos",
             type: "number",
             title: "Productos vendidos",
         })

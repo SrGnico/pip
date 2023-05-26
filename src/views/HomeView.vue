@@ -170,6 +170,8 @@ async function cobrar(_id){
   data.transferenciaSum = 0;
   data.cantidadItems = 0;
 }
+
+fetchData();
 </script>
 
 <template>

@@ -13,40 +13,13 @@ function fetchData(){
 };
 
 const data = reactive({
-    cajas: [{
-  "_createdAt": "2023-05-26T20:23:51Z",
-  "_id": "26-5-2023",
-  "_rev": "sit3o92X2jS5ZjKSdi4sHf",
-  "_type": "cajas",
-  "_updatedAt": "2023-05-26T21:00:22Z",
-  "cantidadDeVentas": 3,
-  "efectivo": 1900,
-  "fecha": "26-5-2023",
-  "productosVendidos": 3,
-  "total": 1900,
-  "transferencia": 0,
-  "isEditing": false
-},{
-  "_createdAt": "2023-05-26T20:23:51Z",
-  "_id": "26-5-2023",
-  "_rev": "sit3o92X2jS5ZjKSdi4sHf",
-  "_type": "cajas",
-  "_updatedAt": "2023-05-26T21:00:22Z",
-  "cantidadDeVentas": 3,
-  "efectivo": 1900,
-  "fecha": "26-5-2023",
-  "productosVendidos": 3,
-  "total": 1900,
-  "transferencia": 0,
-  "isEditing": false
-}],
-
+    cajas: [],
 });
 
 function editCaja(i){
     data.cajas[i].isEditing = !data.cajas[i].isEditing;
 };
-//fetchData();
+fetchData();
 </script>
 
 <template>

@@ -4,6 +4,8 @@ import { reactive } from "vue";
 import Reader from '../components/Reader.vue';
 import { Icon } from '@iconify/vue';
 
+
+
 const date = new Date();
 
 const year = date.getFullYear();
@@ -22,6 +24,11 @@ const data = reactive({
   cantidadItems: 0,
   isToggleTotal: false
 });
+
+if(localStorage.getItem('cart')){
+  let cart = JSON.parse(localStorage.getItem('cart'));
+  data.cart= cart;
+}
 
 function manualPrice(precio, descripcion){
   this.precio = precio,
@@ -53,6 +60,7 @@ function addItemToCart(product){
     let i = data.cart.findIndex(element => element.codigo == product.codigo);
     addItem(i);
     data.decodedText = '';
+    localStorage.setItem('cart', JSON.stringify(data.cart));
     return
   } 
   
@@ -62,7 +70,9 @@ function addItemToCart(product){
     data.totalPriceSum += product.precio; 
     data.cantidadItems++;
     data.decodedText = '';
+    localStorage.setItem('cart', JSON.stringify(data.cart));
   }
+  
   
 }
 
@@ -76,7 +86,7 @@ function addItemManualToCart(){
     data.cart.push(product);
     data.totalPriceSum += parseInt(precio);
     data.cantidadItems++;
-
+    localStorage.setItem('cart', JSON.stringify(data.cart));
     form.reset();
   }
 }
@@ -123,11 +133,13 @@ data.isToggleTotal = !data.isToggleTotal;
 async function cobrar(_id){
   const medioDePago = document.querySelector('#medioDePago').value;
 
-
   if(medioDePago == 'Efectivo'){
     data.efectivoSum = data.totalPriceSum;
   }
-  data.transferenciaSum = data.totalPriceSum;
+  else{
+    data.transferenciaSum = data.totalPriceSum;
+  }
+  
   await createClient
     .createIfNotExists({_type:"cajas", _id, fecha: fecha})
     .then((res) =>{
@@ -138,8 +150,9 @@ async function cobrar(_id){
     });
 
   await createClient
-    .patch({_id})
-    .set({total: data.totalPriceSum})
+    .patch(_id)
+    .setIfMissing({total: 0, efectivo: 0, transferencia:0,cantidadDeVentas:0,productosVendidos:0})
+    .inc({total: data.totalPriceSum, efectivo:data.efectivoSum, transferencia:data.transferenciaSum, cantidadDeVentas:+1, productosVendidos: data.cantidadItems})
     .commit()
     .then((res) =>{
       console.log(res)
@@ -147,6 +160,9 @@ async function cobrar(_id){
     .catch((err)=>{
       console.log(err)
     })
+
+  localStorage.removeItem('cart');
+
 
   data.cart = [];
   data.efectivoSum = 0;

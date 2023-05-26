@@ -27,6 +27,8 @@ const data = reactive({
 
 if(localStorage.getItem('cart')){
   let cart = JSON.parse(localStorage.getItem('cart'));
+  let price = JSON.parse(localStorage.getItem('price'));
+  data.totalPriceSum = price;
   data.cart= cart;
 }
 
@@ -61,6 +63,7 @@ function addItemToCart(product){
     addItem(i);
     data.decodedText = '';
     localStorage.setItem('cart', JSON.stringify(data.cart));
+    localStorage.setItem('price', JSON.stringify(data.totalPriceSum));
     return
   } 
   
@@ -71,6 +74,7 @@ function addItemToCart(product){
     data.cantidadItems++;
     data.decodedText = '';
     localStorage.setItem('cart', JSON.stringify(data.cart));
+    localStorage.setItem('price', JSON.stringify(data.totalPriceSum));
   }
   
   
@@ -87,6 +91,7 @@ function addItemManualToCart(){
     data.totalPriceSum += parseInt(precio);
     data.cantidadItems++;
     localStorage.setItem('cart', JSON.stringify(data.cart));
+    localStorage.setItem('price', JSON.stringify(data.totalPriceSum));
     form.reset();
   }
 }

@@ -111,13 +111,18 @@ function deleteItem(item, i){
   data.totalPriceSum -= (item.precio * item.cantidad);
   data.cantidadItems -= (item.cantidad)
   data.cart.splice(i, 1);
+  localStorage.setItem('cart', JSON.stringify(data.cart));
+  localStorage.setItem('price', JSON.stringify(data.totalPriceSum));
 }
 
 function addItem(i){
   data.cart[i].cantidad++;
   data.cantidadItems++;
   data.totalPriceSum += parseInt(data.cart[i].precio);
+  localStorage.setItem('cart', JSON.stringify(data.cart));
+  localStorage.setItem('price', JSON.stringify(data.totalPriceSum));
 }
+
 function resItem(item, i){
   if(data.cart[i].cantidad == 1){
     deleteItem(item, i);
@@ -126,6 +131,8 @@ function resItem(item, i){
     data.cart[i].cantidad--;
     data.cantidadItems--;
     data.totalPriceSum -= parseInt(data.cart[i].precio);
+    localStorage.setItem('cart', JSON.stringify(data.cart));
+   localStorage.setItem('price', JSON.stringify(data.totalPriceSum));
 
   }
 }
@@ -244,7 +251,6 @@ fetchData();
           <div class="item-cart"  @click="toggleItemEdit(i)">
             <h4 >{{ item.descripcion }} </h4>
             <h2>X {{ item.cantidad }}</h2>
-            
             <h2 >${{ item.precio * item.cantidad }}</h2>
           </div> 
         </div>

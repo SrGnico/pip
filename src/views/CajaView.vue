@@ -24,7 +24,8 @@ const data = reactive({
   "fecha": "26-5-2023",
   "productosVendidos": 3,
   "total": 1900,
-  "transferencia": 0
+  "transferencia": 0,
+  "isEditing": false
 },{
   "_createdAt": "2023-05-26T20:23:51Z",
   "_id": "26-5-2023",
@@ -36,19 +37,23 @@ const data = reactive({
   "fecha": "26-5-2023",
   "productosVendidos": 3,
   "total": 1900,
-  "transferencia": 0
+  "transferencia": 0,
+  "isEditing": false
 }],
 
 });
 
+function editCaja(i){
+    data.cajas[i].isEditing = !data.cajas[i].isEditing;
+};
 //fetchData();
 </script>
 
 <template>
     <div class="principal-container">
-        <div class="caja" v-for="(caja, i) in data.cajas">
+        <div class="caja" :class="{'open' :  caja.isEditing}" v-for="(caja, i) in data.cajas" @click="editCaja(i)">
             <h1>{{ caja.fecha}}</h1>
-            <ul v-if="">
+            <ul v-if="caja.isEditing">
                 <li>Total: ${{ caja.total }}</li>
                 <li>Total Efectivo: ${{ caja.efectivo }}</li>
                 <li>Total Transferencia: ${{ caja.transferencia }}</li>
@@ -61,34 +66,44 @@ const data = reactive({
 
 
 <style scoped>
+
+@keyframes appear {
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
 .principal-container{
     height: 60svh;
     width: 100svw;
     background: linear-gradient(var(--color-b3),var(--color-b1));
     display: flex;
     flex-direction: column;
+
     gap: 5px;
 }
 
 .caja{
-    height: auto;
+    height: 10svh;
     width: 100svw;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     padding: 1svh;
     color: var(--color-b5);
     border: 3px solid var(--color-b5);
 }
 
+.open{
+    height: 30svh;
+}
 .caja>h1{
-    margin: 0;
+    margin: 1svh;
 }
 
 .caja> ul{
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    animation: appear 400ms ease forwards;
 }
 
 </style>

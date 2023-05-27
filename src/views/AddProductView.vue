@@ -12,6 +12,7 @@ const product = reactive({
   categoria: '',
   precio: 0,
   stock: 1,
+  cantidad: 1,
   isEditing: false
 });
 

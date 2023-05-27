@@ -30,6 +30,7 @@ const data = reactive({
   products: [],
   editingProduct: [],
   createdSucessfull: false,
+  deletedSucessfull: false,
   error: false
 })
 
@@ -46,6 +47,29 @@ function editarProducto(_id,descripcion, categoria, precio, stock){
     console.log('Producto actualizado con exito, id es:'+ res._id)
   });
       data.createdSucessfull = true;
+      product.descripcion = '';
+      product.codigo = '';
+      product.categoria = '';
+      product.precio = '';
+      product.stock = '';
+      return;
+  }
+  data.error = true;
+}
+
+function eliminarProducto(_id,descripcion, categoria, precio, stock){
+  data.deletedSucessfull = false;
+  data.error = false;
+
+  if(product.descripcion != '' &&
+     product.codigo != '' &&
+     product.categoria != '' &&
+     product.precio != '' &&
+     product.stock != ''){
+    createClient.delete(_id).then((res) => {
+    console.log('Producto Eliminado con exito')
+  });
+      data.deletedSucessfull = true;
       product.descripcion = '';
       product.codigo = '';
       product.categoria = '';
@@ -107,12 +131,15 @@ fetchData();
    
       </div>
     </div>
-    <button class="btn-crear" @click="editarProducto(product._id, product.descripcion, product.categoria, product.precio, product.stock)">Editar</button>
-
-    <div v-if="data.createdSucessfull || data.error" class="feedback" @click="cerrar">
+    <div class="btns">
+      <button class="btn-borrar" @click="eliminarProducto(product._id, product.descripcion, product.categoria, product.precio, product.stock)">Eliminar</button>
+      <button class="btn-crear" @click="editarProducto(product._id)">Editar</button>
+    </div>
+    <div v-if="data.createdSucessfull || data.error || data.deletedSucessfull" class="feedback" @click="cerrar">
       <Icon class="icon" icon="maki:cross" />
       <h1 v-if="data.createdSucessfull">Producto actualizado con exito!</h1>
       <h1 v-if="data.error">Faltan campos por agregar!</h1>
+      <h1 v-if="data.deletedSucessfull">Producto eliminado con exito!</h1>
     </div>
   </div>
 </template>
@@ -161,6 +188,11 @@ input, select, button{
   flex-direction: column;
 }
 
+.btns{
+  display: flex;
+  justify-content: space-around;
+}
+
 .btn-crear{
   background: var(--color-b6);
   color: var(--color-b5);
@@ -170,6 +202,18 @@ input, select, button{
   font-size: 1.5rem;
   font-weight: bold;
   z-index: 25;
+  width: 45svw;
+}
+.btn-borrar{
+  background: rgb(184, 22, 22);
+  color: var(--color-b5);
+  margin: 10px auto;
+  border: 0;
+  height: 8svh;
+  font-size: 1.5rem;
+  font-weight: bold;
+  z-index: 25;
+  width: 45svw;
 }
 
 .feedback{

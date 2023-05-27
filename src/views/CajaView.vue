@@ -2,7 +2,7 @@
 import createClient from "../clients.js";
 import { reactive } from "vue";
 
-function fetchData(){
+function fetchCajasData(){
   createClient.fetch(`*[_type == 'cajas']`).then(
     (res) => {
       data.cajas = res},
@@ -12,19 +12,48 @@ function fetchData(){
   );
 };
 
+function fetchProductsData(){
+  createClient.fetch(`*[_type == 'products']`).then(
+    (res) => {
+      data.products = res},
+    (error) => {
+      data.error = error;
+    }
+  );
+};
+
 const data = reactive({
+    toggle: false,
     cajas: [],
+    products: []
 });
 
 function editCaja(i){
     data.cajas[i].isEditing = !data.cajas[i].isEditing;
 };
-fetchData();
+function toggle(x){
+    data.toggle = x
+}
+fetchCajasData();
+fetchProductsData();
 </script>
 
 <template>
     <div class="principal-container">
-        <div class="caja" :class="{'open' :  caja.isEditing}" v-for="(caja, i) in data.cajas" @click="editCaja(i)">
+
+        <div class="divisor">
+            <button @click="toggle(false)">Registro Diario</button>
+            <button @click="toggle(true)">Productos Registrados</button>
+        </div>
+
+     
+
+        <div v-show="data.toggle" class="product" :class="{'open' :  product.isEditing}" v-for="(product, i) in data.products">
+            <h3>{{ product.descripcion}}</h3>
+            <h4> ${{ product.precio }}</h4>
+        </div>
+
+        <div v-show="!data.toggle" class="caja" :class="{'open' :  caja.isEditing}" v-for="(caja, i) in data.cajas" @click="editCaja(i)">
             <h1>{{ caja.fecha}}</h1>
             <ul v-if="caja.isEditing">
                 <li>Total: ${{ caja.total }}</li>
@@ -34,6 +63,7 @@ fetchData();
                 <li>Cantidad de ventas: {{ caja.cantidadDeVentas }}</li>
             </ul>
         </div>
+        <div class="clear"></div>
     </div>
 </template>
 
@@ -50,10 +80,31 @@ fetchData();
     background: linear-gradient(var(--color-b3),var(--color-b1));
     display: flex;
     flex-direction: column;
+    
 
     gap: 5px;
 }
 
+.divisor{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+button{
+    font-weight: bold;
+    padding: 10px;
+    width: 25svw;
+    border-radius: 50px;
+    border: 2px solid var(--color-b5);
+    background: var(--color-b3);
+    color: var(--color-b5);
+}
+
+button:active{
+    scale: 0.95;
+}
 .caja{
     height: 10svh;
     width: 100svw;
@@ -64,6 +115,11 @@ fetchData();
     border: 3px solid var(--color-b5);
 }
 
+.clear{
+    height: 15svh;
+    width: 100svw;
+    border: 0;
+}
 .open{
     height: 30svh;
 }
@@ -77,6 +133,16 @@ fetchData();
     flex-direction: column;
     align-items: flex-start;
     animation: appear 400ms ease forwards;
+}
+
+.product{
+    height: 10svh;
+    width: 100svw;
+    display: flex;
+    color: var(--color-b5);
+    border: 3px solid var(--color-b5);
+    justify-content: space-between;
+    padding:0 15px;
 }
 
 </style>

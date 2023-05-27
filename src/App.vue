@@ -26,7 +26,7 @@ nav {
   background:linear-gradient(var(--color-b3), var(--color-b1));
   box-shadow: 0 0 10px var(--color-b3);
   border-radius: 30px 30px 0 0;
-  position: absolute;
+  position: fixed;
   bottom: -.1svh;
   width: 100svw;
   height: 8.2svh;

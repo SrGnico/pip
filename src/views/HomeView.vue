@@ -4,8 +4,6 @@ import { reactive } from "vue";
 import Reader from '../components/Reader.vue';
 import { Icon } from '@iconify/vue';
 
-
-
 const date = new Date();
 
 const year = date.getFullYear();
@@ -52,7 +50,6 @@ function fetchData(){
     }
   );
 };
-
 
 function addQr(qr){
   data.decodedText = qr;

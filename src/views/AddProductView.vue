@@ -27,8 +27,7 @@ function crearProducto(){
   if(product.descripcion != '' &&
      product.codigo != '' &&
      product.categoria != '' &&
-     product.precio != '' &&
-     product.stock != ''){
+     product.precio != ''){
 
       createClient.create(product).then((res) => {
         console.log('Producto creado con exito, id es:'+ res._id)
@@ -38,7 +37,6 @@ function crearProducto(){
       product.codigo = '';
       product.categoria = '';
       product.precio = '';
-      product.stock = '';
       return;
   }
   data.error = true;

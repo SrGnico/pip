@@ -29,7 +29,7 @@ function crearProducto(){
      product.categoria != '' &&
      product.precio != ''){
 
-      createClient.create(product).then((res) => {
+      createClient.createIfNotExists(product).then((res) => {
         console.log('Producto creado con exito, id es:'+ res._id)
       });
       data.createdSucessfull = true;

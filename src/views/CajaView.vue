@@ -25,7 +25,8 @@ function fetchProductsData(){
 const data = reactive({
     toggle: false,
     cajas: [],
-    products: []
+    products: [],
+    search: ''
 });
 
 function editCaja(i){
@@ -43,25 +44,30 @@ fetchProductsData();
 
         <div class="divisor">
             <button @click="toggle(false)">Registro Diario</button>
+            <!--<input type="text" placeholder="Buscar" v-model="data.search">-->
             <button @click="toggle(true)">Productos Registrados</button>
         </div>
 
      
 
-        <div v-show="data.toggle" class="product" :class="{'open' :  product.isEditing}" v-for="(product, i) in data.products">
-            <h3>{{ product.descripcion}}</h3>
-            <h4> ${{ product.precio }}</h4>
+        <div v-show="data.toggle" v-for="(product, i) in data.products">
+            <div class="product" v-show="product.descripcion == data.search || data.search == ''">
+                <h3>{{ product.descripcion}}</h3>
+                <h4> ${{ product.precio }}</h4>
+            </div>
         </div>
 
         <div v-show="!data.toggle" class="caja" :class="{'open' :  caja.isEditing}" v-for="(caja, i) in data.cajas" @click="editCaja(i)">
-            <h1>{{ caja.fecha}}</h1>
-            <ul v-if="caja.isEditing">
-                <li>Total: ${{ caja.total }}</li>
-                <li>Total Efectivo: ${{ caja.efectivo }}</li>
-                <li>Total Transferencia: ${{ caja.transferencia }}</li>
-                <li>Productos vendidos: {{ caja.productosVendidos }}</li>
-                <li>Cantidad de ventas: {{ caja.cantidadDeVentas }}</li>
-            </ul>
+            <div class="div">
+                <h1>{{ caja.fecha}}</h1>
+                <ul v-if="caja.isEditing">
+                    <li>Total: ${{ caja.total }}</li>
+                    <li>Total Efectivo: ${{ caja.efectivo }}</li>
+                    <li>Total Transferencia: ${{ caja.transferencia }}</li>
+                    <li>Productos vendidos: {{ caja.productosVendidos }}</li>
+                    <li>Cantidad de ventas: {{ caja.cantidadDeVentas }}</li>
+                </ul>
+            </div>
         </div>
         <div class="clear"></div>
     </div>
@@ -92,7 +98,7 @@ fetchProductsData();
     padding: 10px;
 }
 
-button{
+button, input{
     font-weight: bold;
     padding: 10px;
     width: 25svw;
@@ -110,7 +116,6 @@ button:active{
     width: 100svw;
     display: flex;
     flex-direction: column;
-    padding: 1svh;
     color: var(--color-b5);
     border: 3px solid var(--color-b5);
 }
@@ -127,7 +132,7 @@ button:active{
     margin: 1svh;
 }
 
-.caja> ul{
+.div> ul{
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -139,10 +144,17 @@ button:active{
     height: 10svh;
     width: 100svw;
     display: flex;
+    justify-content: space-between;
     color: var(--color-b5);
     border: 3px solid var(--color-b5);
-    justify-content: space-between;
+
     padding:0 15px;
+}
+
+.div{
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 svh 0;
 }
 
 </style>

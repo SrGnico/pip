@@ -61,11 +61,7 @@ function eliminarProducto(_id,descripcion, categoria, precio, stock){
   data.deletedSucessfull = false;
   data.error = false;
 
-  if(product.descripcion != '' &&
-     product.codigo != '' &&
-     product.categoria != '' &&
-     product.precio != '' &&
-     product.stock != ''){
+  if(product._id != ''){
     createClient.delete(_id).then((res) => {
     console.log('Producto Eliminado con exito')
   });

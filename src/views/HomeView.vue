@@ -64,8 +64,6 @@ function addItemToCart(product){
     let i = data.cart.findIndex(element => element.codigo == product.codigo);
     addItem(i);
     data.decodedText = '';
-    localStorage.setItem('cart', JSON.stringify(data.cart));
-    localStorage.setItem('price', JSON.stringify(data.totalPriceSum));
     return
   } 
   

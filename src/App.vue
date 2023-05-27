@@ -1,13 +1,12 @@
 <script setup>
 import { Icon } from '@iconify/vue';
-
 </script>
 <template>
     <router-view/>
   <nav>
     <router-link to="/caja"><Icon class="icon" icon="bxs:file" /></router-link>
     <router-link to="/editProduct"><Icon class="icon" icon="mdi:tag-edit" /></router-link>
-    <router-link to="/"><Icon class="icon" icon="fluent:home-48-filled" /></router-link>
+    <router-link to="/home"><Icon class="icon" icon="fluent:home-48-filled" /></router-link>
     <router-link to="/addProduct"><Icon class="icon" icon="mdi:tag-add" /></router-link>
   </nav>
 
@@ -27,10 +26,10 @@ nav {
   background:linear-gradient(var(--color-b3), var(--color-b1));
   box-shadow: 0 0 10px var(--color-b3);
   border-radius: 30px 30px 0 0;
-  position: fixed;
+  position: absolute;
   bottom: -.1svh;
   width: 100svw;
-  height: 8.1svh;
+  height: 8.2svh;
   padding: 15px;
   display: flex;
   justify-content: space-around;

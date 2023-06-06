@@ -1,6 +1,9 @@
 <script setup>
 import createClient from "../clients.js";
 import { reactive } from "vue";
+import { defineEmits } from 'vue'
+
+const emit = defineEmits(['editingItem'])
 
 function fetchCajasData(){
   createClient.fetch(`*[_type == 'cajas']`).then(
@@ -35,6 +38,9 @@ function editCaja(i){
 function toggle(x){
     data.toggle = x
 }
+function editItem(x){
+    emit('editingItem', x)
+}
 fetchCajasData();
 fetchProductsData();
 </script>
@@ -51,7 +57,7 @@ fetchProductsData();
      
 
         <div v-show="data.toggle" v-for="(product, i) in data.products">
-            <div class="product" v-show="product.descripcion == data.search || data.search == ''">
+            <div class="product" @click="editItem(product)">
                 <h3>{{ product.descripcion}}</h3>
                 <h4> ${{ product.precio }}</h4>
             </div>

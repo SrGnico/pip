@@ -6,7 +6,7 @@ import { Icon } from '@iconify/vue';
   <nav>
     <router-link to="/caja"><Icon class="icon" icon="bxs:file" /></router-link>
     <router-link to="/editProduct"><Icon class="icon" icon="mdi:tag-edit" /></router-link>
-    <router-link to="/home"><Icon class="icon" icon="fluent:home-48-filled" /></router-link>
+    <router-link to="/"><Icon class="icon" icon="fluent:home-48-filled" /></router-link>
     <router-link to="/addProduct"><Icon class="icon" icon="mdi:tag-add" /></router-link>
   </nav>
 
